@@ -1,0 +1,10 @@
+from django.db import models
+
+from core.models import BaseModel
+
+
+class Channel(BaseModel):
+    name = models.CharField(max_length=100)
+    type = models.CharField(max_length=100)
+    config = models.JSONField()
+    is_active = models.BooleanField(default=True)
