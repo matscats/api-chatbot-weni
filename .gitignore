@@ -1,0 +1,15 @@
+__pycache__/
+venv/
+.env
+*.pem
+*.key
+.vscode/
+.idea/
+.pytest_cache/
+*.pid
+celerybeat-schedule
+poetry.lock
+logs/
+*.log
+*.db
+*.sqlite3
