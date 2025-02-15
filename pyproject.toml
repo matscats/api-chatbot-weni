@@ -1,0 +1,20 @@
+[tool.poetry]
+name = "api-test"
+version = "0.1.0"
+description = "API para o teste técnico da Weni"
+authors = ["Mateus Cavalcanti <mateuscavalcanti1607@gmail.com>"]
+readme = "README.md"
+package-mode = false
+
+[tool.poetry.dependencies]
+python = "^3.12"
+django = "^5.1.6"
+djangorestframework = "^3.15.2"
+django-environ = "^0.12.0"
+django-filter = "^25.1"
+psycopg = "^3.2.4"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
