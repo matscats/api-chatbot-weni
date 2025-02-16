@@ -1,4 +1,5 @@
 import telegram
+import asyncio
 
 from core.interfaces import ChannelInterface
 
@@ -11,17 +12,17 @@ class TelegramChannel(ChannelInterface):
     def __init__(self, config: Dict[str, Any]):
         self.bot = telegram.Bot(token=config["token"])
 
-    async def send_message(self, contact_id: UUID, message: str) -> bool:
+    def send_message(self, contact_id: UUID, message: str) -> bool:
         try:
-            await self.bot.send_message(chat_id=contact_id, text=message)
+            asyncio.run(self.bot.send_message(chat_id=contact_id, text=message))
             return True
         except:
             return False
 
-    async def process_webhook(self, payload: Dict[str, Any]) -> Dict[str, Any]:
+    def process_webhook(self, payload: Dict[str, Any]) -> Dict[str, Any]:
         try:
-            chat = payload.get("chat", {})
             message = payload.get("message", {})
+            chat = message.get("chat", {})
 
             return {
                 "contact_id": str(chat.get("id")),
