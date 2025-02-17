@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 from datetime import timedelta
 from pathlib import Path
+from celery.schedules import crontab
 
 import environ
 
@@ -115,7 +116,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = "pt-br"
 
-TIME_ZONE = "UTC"
+TIME_ZONE = "America/Fortaleza"
 
 USE_I18N = True
 
@@ -143,10 +144,26 @@ SIMPLE_JWT = {
     "BLACKLIST_AFTER_ROTATION": True,
 }
 
+# Telegram
 TELEGRAM_BOT_TOKEN = env("TELEGRAM_BOT_TOKEN")
 
+# WhatsApp
 WHATSAPP_ACCOUNT_SID = env("WHATSAPP_ACCOUNT_SID")
 WHATSAPP_AUTH_TOKEN = env("WHATSAPP_AUTH_TOKEN")
 WHATSAPP_FROM_NUMBER = env("WHATSAPP_FROM_NUMBER")
 
 BASE_URL = env("BASE_URL")
+
+# Celery
+CELERY_BROKER_URL = f"amqp://{env('RABBITMQ_USER')}:{env('RABBITMQ_PASSWORD')}@{env("RABBITMQ_HOST")}:5672/"
+CELERY_RESULT_BACKEND = "rpc://"
+CELERY_ACCEPT_CONTENT = ["json"]
+CELERY_TASK_SERIALIZER = "json"
+CELERY_RESULT_SERIALIZER = "json"
+CELERY_BROKER_CONNECTION_RETRY_ON_STARTUP = True
+CELERY_BEAT_SCHEDULE = {
+    "delete-old-messages": {
+        "task": "core.tasks.delete_old_messages",
+        "schedule": crontab(hour=0, minute=36),
+    },
+}

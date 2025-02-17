@@ -17,6 +17,7 @@ python-telegram-bot = "^21.10"
 djangorestframework-simplejwt = "^5.4.0"
 requests = "^2.32.3"
 twilio = "^9.4.5"
+celery = "^5.4.0"
 
 
 [build-system]
