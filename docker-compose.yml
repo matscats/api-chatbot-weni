@@ -1,0 +1,76 @@
+services:
+  database:
+    image: postgres
+    environment:
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    ports:
+      - "${DB_PORT}:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    networks:
+      - backend
+
+  rabbitmq:
+    image: rabbitmq
+    environment:
+      RABBITMQ_DEFAULT_USER: ${RABBITMQ_USER}
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_PASSWORD}
+    ports:
+      - "5672:5672"
+    networks:
+      - backend
+
+  api:
+    build: .
+    depends_on:
+      database:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_started
+    environment:
+      - POSTGRES_HOST=database
+    command: >
+      sh -c "cd app/ &&
+             python manage.py populate_default_channels &&
+             python manage.py setup_telegram_webhook &&
+             python manage.py migrate &&
+             gunicorn --workers 3 --bind 0.0.0.0:8000 config.wsgi:application"
+    ports:
+      - "8000:8000"
+    networks:
+      - backend
+
+  celery_worker:
+    build: .
+    command: sh -c "cd app/ && celery -A core.tasks.celery worker -l INFO"
+    depends_on:
+      - rabbitmq
+      - api
+    environment:
+      - POSTGRES_HOST=database
+    networks:
+      - backend
+
+  celery_beat:
+    build: .
+    command: sh -c "cd app/ && celery -A core.tasks.celery beat -l INFO"
+    depends_on:
+      - rabbitmq
+      - api
+    environment:
+      - POSTGRES_HOST=database
+    networks:
+      - backend
+
+volumes:
+  postgres_data:
+
+networks:
+  backend:

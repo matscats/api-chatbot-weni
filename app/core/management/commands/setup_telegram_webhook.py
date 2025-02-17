@@ -16,8 +16,6 @@ class Command(BaseCommand):
 
         try:
             response = requests.post(api_url, json=data)
-            self.stdout.write(
-                self.style.SUCCESS(f"Webhook configurado: {response.json()}")
-            )
+            self.stdout.write(self.style.SUCCESS(f"Webhook configurado"))
         except Exception as e:
             self.stdout.write(self.style.ERROR(f"Erro ao configurar webhook: {e}"))

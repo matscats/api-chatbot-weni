@@ -16,26 +16,19 @@ from celery.schedules import crontab
 
 import environ
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 env = environ.Env()
 environ.Env.read_env(BASE_DIR.__str__() + "/../.env")
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = env.str(
     "DJANGO_SECRET_KEY",
     default="django-insecure-@1fw$$4e(9%5fw*eql#7)i)f-ya!4#icw8lf1-uvcre4fqwgn%",
 )
-# SECURITY WARNING: don't run with debug turned on in production!
+
 DEBUG = env("DEBUG", default=False)
 
 ALLOWED_HOSTS = ["*"]
-
-# Application definition
 
 INSTALLED_APPS = [
     "django.contrib.auth",
@@ -56,44 +49,20 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
-TEMPLATES = [
-    {
-        "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
-        "APP_DIRS": True,
-        "OPTIONS": {
-            "context_processors": [
-                "django.template.context_processors.debug",
-                "django.template.context_processors.request",
-                "django.contrib.auth.context_processors.auth",
-                "django.contrib.messages.context_processors.messages",
-            ],
-        },
-    },
-]
-
 ROOT_URLCONF = "config.urls"
 
 WSGI_APPLICATION = "config.wsgi.application"
 
-
-# Database
-# https://docs.djangoproject.com/en/5.1/ref/settings/#databases
-
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": env("DB_NAME", default="nts"),
-        "USER": env("DB_USER", default="nts"),
-        "PASSWORD": env("DB_PASSWORD", default="nts"),
-        "HOST": env("DB_HOST", default="database"),
-        "PORT": env("DB_PORT", default="5432"),
+        "NAME": env("DB_NAME"),
+        "USER": env("DB_USER"),
+        "PASSWORD": env("DB_PASSWORD"),
+        "HOST": env("DB_HOST"),
+        "PORT": env("DB_PORT"),
     }
 }
-
-
-# Password validation
-# https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -110,10 +79,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
-# Internationalization
-# https://docs.djangoproject.com/en/5.1/topics/i18n/
-
 LANGUAGE_CODE = "pt-br"
 
 TIME_ZONE = "America/Fortaleza"
@@ -121,9 +86,6 @@ TIME_ZONE = "America/Fortaleza"
 USE_I18N = True
 
 USE_TZ = True
-
-# Default primary key field type
-# https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
@@ -144,17 +106,14 @@ SIMPLE_JWT = {
     "BLACKLIST_AFTER_ROTATION": True,
 }
 
-# Telegram
 TELEGRAM_BOT_TOKEN = env("TELEGRAM_BOT_TOKEN")
 
-# WhatsApp
 WHATSAPP_ACCOUNT_SID = env("WHATSAPP_ACCOUNT_SID")
 WHATSAPP_AUTH_TOKEN = env("WHATSAPP_AUTH_TOKEN")
 WHATSAPP_FROM_NUMBER = env("WHATSAPP_FROM_NUMBER")
 
 BASE_URL = env("BASE_URL")
 
-# Celery
 CELERY_BROKER_URL = f"amqp://{env('RABBITMQ_USER')}:{env('RABBITMQ_PASSWORD')}@{env("RABBITMQ_HOST")}:5672/"
 CELERY_RESULT_BACKEND = "rpc://"
 CELERY_ACCEPT_CONTENT = ["json"]
@@ -164,6 +123,6 @@ CELERY_BROKER_CONNECTION_RETRY_ON_STARTUP = True
 CELERY_BEAT_SCHEDULE = {
     "delete-old-messages": {
         "task": "core.tasks.delete_old_messages",
-        "schedule": crontab(hour=0, minute=36),
+        "schedule": crontab(hour=1, minute=54),
     },
 }

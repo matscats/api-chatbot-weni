@@ -14,7 +14,7 @@ logger = logging.getLogger(__name__)
 @shared_task(name="core.tasks.delete_old_messages")
 def delete_old_messages():
     try:
-        delete_date = timezone.now() - timedelta(seconds=30)
+        delete_date = timezone.now() - timedelta(days=30)
 
         deleted_count = Message.objects.filter(created_at__lt=delete_date).delete()[0]
 
