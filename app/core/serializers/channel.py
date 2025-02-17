@@ -5,4 +5,4 @@ from core.serializers import BaseModelSerializer
 class ChannelSerializer(BaseModelSerializer):
     class Meta:
         model = Channel
-        fields = "__all__"
+        exclude = ["config"]

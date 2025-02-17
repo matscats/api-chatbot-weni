@@ -4,6 +4,6 @@ from core.serializers import ContactSerializer
 from core.models import Contact
 
 
-class ContactViewSet(viewsets.ModelViewSet):
+class ContactViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = ContactSerializer
     queryset = Contact.objects.all()
