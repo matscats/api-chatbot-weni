@@ -58,11 +58,11 @@ WSGI_APPLICATION = "config.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": env("DB_NAME"),
-        "USER": env("DB_USER"),
-        "PASSWORD": env("DB_PASSWORD"),
-        "HOST": env("DB_HOST"),
-        "PORT": env("DB_PORT"),
+        "NAME": env("DB_NAME", default="test_db"),
+        "USER": env("DB_USER", default="postgres"),
+        "PASSWORD": env("DB_PASSWORD", default="postgres"),
+        "HOST": env("DB_HOST", default="localhost"),
+        "PORT": env("DB_PORT", default="5432"),
         "TEST": {
             "NAME": "test_db",
             "USER": "postgres",
@@ -147,15 +147,15 @@ SIMPLE_JWT = {
     "BLACKLIST_AFTER_ROTATION": True,
 }
 
-TELEGRAM_BOT_TOKEN = env("TELEGRAM_BOT_TOKEN")
+TELEGRAM_BOT_TOKEN = env("TELEGRAM_BOT_TOKEN", default=" ")
 
-WHATSAPP_ACCOUNT_SID = env("WHATSAPP_ACCOUNT_SID")
-WHATSAPP_AUTH_TOKEN = env("WHATSAPP_AUTH_TOKEN")
-WHATSAPP_FROM_NUMBER = env("WHATSAPP_FROM_NUMBER")
+WHATSAPP_ACCOUNT_SID = env("WHATSAPP_ACCOUNT_SID", default=" ")
+WHATSAPP_AUTH_TOKEN = env("WHATSAPP_AUTH_TOKEN", default=" ")
+WHATSAPP_FROM_NUMBER = env("WHATSAPP_FROM_NUMBER", default=" ")
 
-BASE_URL = env("BASE_URL")
+BASE_URL = env("BASE_URL", default="http://localhost:8000")
 
-CELERY_BROKER_URL = f"amqp://{env('RABBITMQ_USER')}:{env('RABBITMQ_PASSWORD')}@{env("RABBITMQ_HOST")}:5672/"
+CELERY_BROKER_URL = f"amqp://{env('RABBITMQ_USER',default="guest")}:{env('RABBITMQ_PASSWORD', default="guest")}@{env("RABBITMQ_HOST", default="localhost")}:5672/"
 CELERY_RESULT_BACKEND = "rpc://"
 CELERY_ACCEPT_CONTENT = ["json"]
 CELERY_TASK_SERIALIZER = "json"
