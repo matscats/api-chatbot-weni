@@ -13,5 +13,5 @@ class ReceiveMessageServiceInterface(Protocol):
 
 class SendMessageServiceInterface(Protocol):
     def send_message(
-        self, contact_id: UUID, content: str, user_id: UUID
+        self, contact_id: UUID, content: str, agent_id: UUID
     ) -> Message: ...

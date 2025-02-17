@@ -1,7 +1,7 @@
 import telegram
 import asyncio
 
-from core.interfaces import ChannelInterface
+from channels.base import ChannelInterface, WebhookResponse
 
 from typing import Dict, Any
 
@@ -9,6 +9,8 @@ from uuid import UUID
 
 
 class TelegramChannel(ChannelInterface):
+    channel_type = "telegram"
+
     def __init__(self, config: Dict[str, Any]):
         self.bot = telegram.Bot(token=config["token"])
 
@@ -19,7 +21,7 @@ class TelegramChannel(ChannelInterface):
         except:
             return False
 
-    def process_webhook(self, payload: Dict[str, Any]) -> Dict[str, Any]:
+    def process_webhook(self, payload: Dict[str, Any]) -> WebhookResponse:
         try:
             message = payload.get("message", {})
             chat = message.get("chat", {})
@@ -34,5 +36,5 @@ class TelegramChannel(ChannelInterface):
                     "username": chat.get("username"),
                 },
             }
-        except Exception as e:
+        except:
             raise ValueError("Formato de Webhook inválido.")

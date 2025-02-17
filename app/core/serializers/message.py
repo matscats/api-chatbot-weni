@@ -1,7 +1,7 @@
 from core.serializers import (
     BaseModelSerializer,
     CompactContactSerializer,
-    CompactUserSerializer,
+    CompactAgentSerializer,
 )
 from core.models import Message
 from core.services import SendMessageService
@@ -11,7 +11,7 @@ from rest_framework import serializers
 
 class MessageSerializer(BaseModelSerializer):
     contact = CompactContactSerializer(read_only=True)
-    user = CompactUserSerializer(read_only=True)
+    agent = CompactAgentSerializer(read_only=True)
     contact_id = serializers.UUIDField(write_only=True)
 
     class Meta:
@@ -21,9 +21,9 @@ class MessageSerializer(BaseModelSerializer):
 
     def validate(self, attrs):
         direction = attrs.get("direction")
-        user = attrs.get("user")
+        agent = attrs.get("agent")
 
-        if direction == "OUT" and user is None:
+        if direction == "OUT" and agent is None:
             raise serializers.ValidationError(
                 "É necessário informar um usuário para mensagens de saída."
             )
@@ -35,6 +35,6 @@ class MessageSerializer(BaseModelSerializer):
         message = message_service.send_message(
             contact_id=validated_data.get("contact_id"),
             content=validated_data.get("content"),
-            user_id=self.context["request"].user.id,
+            agent_id=self.context["request"].user.id,
         )
         return message

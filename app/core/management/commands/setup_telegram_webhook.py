@@ -10,7 +10,6 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         token = settings.TELEGRAM_BOT_TOKEN
         webhook_url = f"{settings.BASE_URL}/webhooks/telegram/{token}/"
-        print(webhook_url)
 
         api_url = f"https://api.telegram.org/bot{token}/setWebhook"
         data = {"url": webhook_url, "allowed_updates": ["message"]}

@@ -40,8 +40,8 @@ INSTALLED_APPS = [
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
-    "rest_framework",
     "django_filters",
+    "rest_framework",
     "core",
     "authentication",
 ]
@@ -126,13 +126,14 @@ USE_TZ = True
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-AUTH_USER_MODEL = "core.User"
+AUTH_USER_MODEL = "core.Agent"
 
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
         "rest_framework_simplejwt.authentication.JWTAuthentication",
     ),
     "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.IsAuthenticated",),
+    "DEFAULT_FILTER_BACKENDS": ("django_filters.rest_framework.DjangoFilterBackend",),
 }
 
 SIMPLE_JWT = {
@@ -143,4 +144,9 @@ SIMPLE_JWT = {
 }
 
 TELEGRAM_BOT_TOKEN = env("TELEGRAM_BOT_TOKEN")
+
+WHATSAPP_ACCOUNT_SID = env("WHATSAPP_ACCOUNT_SID")
+WHATSAPP_AUTH_TOKEN = env("WHATSAPP_AUTH_TOKEN")
+WHATSAPP_FROM_NUMBER = env("WHATSAPP_FROM_NUMBER")
+
 BASE_URL = env("BASE_URL")

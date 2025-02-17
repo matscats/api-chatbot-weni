@@ -1,5 +1,5 @@
 from .base import BaseModel
-from .user import User
+from .agent import Agent
 from .channel import Channel
 from .contact import Contact
 from .message import Message

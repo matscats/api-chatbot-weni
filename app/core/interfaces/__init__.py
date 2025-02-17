@@ -1,2 +1,1 @@
-from .channel import ChannelInterface
 from .message_service import SendMessageServiceInterface, ReceiveMessageServiceInterface

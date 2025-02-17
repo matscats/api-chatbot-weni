@@ -1,45 +1,26 @@
 from django.core.cache import cache
+from django.shortcuts import get_object_or_404
 
 from typing import Optional
-
-from core.models import Message, Contact, Channel, User
 
 from uuid import UUID
 
 from channels import ChannelFactory
+
+from core.models import Message, Contact, Channel, Agent
 from core.interfaces.message_service import (
     SendMessageServiceInterface,
     ReceiveMessageServiceInterface,
 )
+from core import exceptions
 
 
 class ReceiveMessageService(ReceiveMessageServiceInterface):
     def _get_active_channel(self, channel_type: str) -> Channel:
         return Channel.objects.get(type=channel_type, is_active=True)
 
-    def _get_or_create_contact(
-        self, external_id: str, channel: Channel, contact_data: dict
-    ) -> Contact:
-        contact, _ = Contact.objects.get_or_create(
-            external_id=external_id,
-            channel=channel,
-            defaults={"name": contact_data.get("name", "Unknown")},
-        )
-        return contact
-
-    def _get_available_user(self) -> Optional[User]:
-        return User.objects.filter(is_available=True).order_by("last_activity").first()
-
-    def _create_message(
-        self, content: str, contact: Contact, user: Optional[User], direction: str
-    ) -> Message:
-        return Message.objects.create(
-            content=content,
-            contact=contact,
-            user=user,
-            direction=direction,
-            status="RECEIVED",
-        )
+    def _get_available_agent(self) -> Optional[Agent]:
+        return Agent.objects.filter(is_available=True).order_by("last_activity").first()
 
     def receive_message(self, channel_type: str, payload: dict) -> Message:
         try:
@@ -50,39 +31,28 @@ class ReceiveMessageService(ReceiveMessageServiceInterface):
 
             processed_data = channel_handler.process_webhook(payload)
 
-            contact = self._get_or_create_contact(
+            contact, _ = Contact.objects.get_or_create(
                 external_id=processed_data["contact_id"],
                 channel=channel,
-                contact_data=processed_data.get("contact_data", {}),
+                name=processed_data.get("contact_data", {}).get("name", ""),
             )
 
-            user = self._get_available_user()
+            agent = self._get_available_agent()
 
-            return self._create_message(
+            return Message.objects.create(
                 content=processed_data["message"],
                 contact=contact,
-                user=user,
+                agent=agent,
                 direction="IN",
             )
 
         except Exception as e:
-            pass
+            raise exceptions.FailedToReceiveMessage(detail=str(e))
 
 
 class SendMessageService(SendMessageServiceInterface):
     def __init__(self):
         self.cache_ttl = 3600
-
-    def _create_message(
-        self, content: str, contact: Contact, user: User, direction: str
-    ) -> Message:
-        return Message.objects.create(
-            content=content,
-            contact=contact,
-            user=user,
-            direction=direction,
-            status="PENDING",
-        )
 
     def _update_frequent_messages_cache(self, content: str):
         cache_key = f"message_frequency_{content[:50]}"
@@ -92,10 +62,10 @@ class SendMessageService(SendMessageServiceInterface):
         if frequency > 10:
             cache.set(f"frequent_response_{content[:50]}", content, self.cache_ttl * 24)
 
-    def send_message(self, contact_id: int, content: str, user_id: UUID) -> Message:
+    def send_message(self, contact_id: int, content: str, agent_id: UUID) -> Message:
         try:
-            contact = Contact.objects.get(id=contact_id)
-            user = User.objects.get(id=user_id)
+            contact = get_object_or_404(Contact, id=contact_id)
+            agent = get_object_or_404(Agent, id=agent_id)
 
             cache_key = f"frequent_response_{content[:50]}"
             if cached_response := cache.get(cache_key):
@@ -105,17 +75,21 @@ class SendMessageService(SendMessageServiceInterface):
                 contact.channel.type, contact.channel.config
             )
 
-            message = self._create_message(
-                content=content, contact=contact, user=user, direction="OUT"
+            message = Message.objects.create(
+                content=content,
+                contact=contact,
+                agent=agent,
+                direction="OUT",
+                status="PENDING",
             )
 
             success = channel_handler.send_message(contact.external_id, content)
 
             if not success:
                 message.status = "FAILED"
-                message.asave()
+                message.save()
 
             return message
 
         except Exception as e:
-            pass
+            raise exceptions.FailedToSendMessage(detail=str(e))

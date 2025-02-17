@@ -1,1 +1,1 @@
-from .user import IsUserSelf
+from .agent import IsAgentSelf

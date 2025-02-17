@@ -1,23 +1,21 @@
-from rest_framework import viewsets
+from rest_framework import viewsets, mixins
 from rest_framework.pagination import PageNumberPagination
 
 from core.models import Message
 from core.serializers import MessageSerializer
+from core.filters import MessageFilter
+
+from django_filters import rest_framework as filters
 
 
-class MessageViewSet(viewsets.ModelViewSet):
+class MessageViewSet(
+    mixins.CreateModelMixin,
+    mixins.RetrieveModelMixin,
+    mixins.ListModelMixin,
+    viewsets.GenericViewSet,
+):
     serializer_class = MessageSerializer
     pagination_class = PageNumberPagination
-
-    def get_queryset(self):
-        queryset = Message.objects.select_related("contact", "user").all()
-        contact_id = self.request.query_params.get("contact")
-        user = self.request.user
-
-        if contact_id:
-            queryset = queryset.filter(contact_id=contact_id)
-
-        if not user.is_anonymous:
-            queryset = queryset.filter(user=user)
-
-        return queryset
+    filter_backends = (filters.DjangoFilterBackend,)
+    queryset = Message.objects.all()
+    filterset_class = MessageFilter

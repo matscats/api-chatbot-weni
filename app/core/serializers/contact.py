@@ -5,9 +5,11 @@ from rest_framework import serializers
 
 
 class ContactSerializer(BaseModelSerializer):
+    channel_type = serializers.CharField(source="channel.type", read_only=True)
+
     class Meta:
         model = Contact
-        fields = "__all__"
+        fields = ["id", "external_id", "name", "channel_type"]
 
 
 class CompactContactSerializer(serializers.Serializer):
