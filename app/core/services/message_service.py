@@ -16,15 +16,13 @@ from core import exceptions
 
 
 class ReceiveMessageService(ReceiveMessageServiceInterface):
-    def _get_active_channel(self, channel_type: str) -> Channel:
-        return Channel.objects.get(type=channel_type, is_active=True)
-
     def _get_available_agent(self) -> Optional[Agent]:
         return Agent.objects.filter(is_available=True).order_by("last_activity").first()
 
     def receive_message(self, channel_type: str, payload: dict) -> Message:
         try:
-            channel = self._get_active_channel(channel_type)
+            channel = Channel.objects.get(type=channel_type)
+
             channel_handler = ChannelFactory.create_channel(
                 channel.type, channel.config
             )

@@ -15,7 +15,6 @@ class Command(BaseCommand):
                 type="telegram",
                 defaults={
                     "config": {"token": settings.TELEGRAM_BOT_TOKEN},
-                    "is_active": True,
                 },
             )
 
@@ -42,7 +41,6 @@ class Command(BaseCommand):
                         "auth_token": settings.WHATSAPP_AUTH_TOKEN,
                         "from_number": settings.WHATSAPP_FROM_NUMBER,
                     },
-                    "is_active": True,
                 },
             )
 
