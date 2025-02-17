@@ -37,10 +37,15 @@ jobs:
 
       - name: Deploy to EC2
         run: |
+          ssh ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }} 'mkdir -p ~/api-test'
+          
+          scp .env ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }}:~/api-test/.env
+
           scp -r ./* ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }}:~/api-test/
+          
           ssh ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }} '
             cd ~/api-test
-            docker-compose down
+            docker compose down
             docker compose build
             docker compose up -d
           '
