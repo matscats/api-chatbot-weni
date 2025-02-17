@@ -8,6 +8,12 @@ from core.filters import MessageFilter
 from django_filters import rest_framework as filters
 
 
+class MessagePagination(PageNumberPagination):
+    page_size = 10
+    max_page_size = 100
+    page_size_query_param = "page_size"
+
+
 class MessageViewSet(
     mixins.CreateModelMixin,
     mixins.RetrieveModelMixin,
@@ -15,7 +21,7 @@ class MessageViewSet(
     viewsets.GenericViewSet,
 ):
     serializer_class = MessageSerializer
-    pagination_class = PageNumberPagination
+    pagination_class = MessagePagination
     filter_backends = (filters.DjangoFilterBackend,)
     queryset = Message.objects.all()
     filterset_class = MessageFilter

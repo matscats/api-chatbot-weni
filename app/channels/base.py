@@ -1,6 +1,6 @@
 from abc import ABC, ABCMeta, abstractmethod
 
-from typing import Dict, Type, TypedDict
+from typing import Dict, Type, TypedDict, Any
 
 
 class ContactData(TypedDict):
@@ -28,6 +28,10 @@ class ChannelMeta(ABCMeta):
 
 class ChannelInterface(ABC, metaclass=ChannelMeta):
     channel_type: str = None
+
+    @abstractmethod
+    def __init__(self, config: Dict[str, Any]):
+        super().__init__()
 
     @abstractmethod
     def send_message(self, contact_id: str, message: str) -> bool:

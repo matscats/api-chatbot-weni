@@ -19,6 +19,7 @@ class WhatsAppChannel(ChannelInterface):
             )
             return True
         except Exception as e:
+            print(str(e))
             return False
 
     def process_webhook(self, payload: Dict[str, Any]) -> WebhookResponse:

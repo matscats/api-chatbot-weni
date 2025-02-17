@@ -60,7 +60,7 @@ class SendMessageService(SendMessageServiceInterface):
         if frequency > 10:
             cache.set(f"frequent_response_{content[:50]}", content, self.cache_ttl * 24)
 
-    def send_message(self, contact_id: int, content: str, agent_id: UUID) -> Message:
+    def send_message(self, contact_id: UUID, content: str, agent_id: UUID) -> Message:
         try:
             contact = get_object_or_404(Contact, id=contact_id)
             agent = get_object_or_404(Agent, id=agent_id)
