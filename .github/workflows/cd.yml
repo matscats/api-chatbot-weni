@@ -1,0 +1,46 @@
+name: Deploy to EC2
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Create .env file
+        run: |
+          echo "DEBUG=${{ secrets.DEBUG }}" >> .env
+          echo "DJANGO_SECRET_KEY=${{ secrets.DJANGO_SECRET_KEY }}" >> .env
+          echo "DB_NAME=${{ secrets.DB_NAME }}" >> .env
+          echo "DB_USER=${{ secrets.DB_USER }}" >> .env
+          echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> .env
+          echo "DB_HOST=${{ secrets.DB_HOST }}" >> .env
+          echo "DB_PORT=${{ secrets.DB_PORT }}" >> .env
+          echo "TELEGRAM_BOT_TOKEN=${{ secrets.TELEGRAM_BOT_TOKEN }}" >> .env
+          echo "WHATSAPP_ACCOUNT_SID=${{ secrets.WHATSAPP_ACCOUNT_SID }}" >> .env
+          echo "WHATSAPP_AUTH_TOKEN=${{ secrets.WHATSAPP_AUTH_TOKEN }}" >> .env
+          echo "WHATSAPP_FROM_NUMBER=${{ secrets.WHATSAPP_FROM_NUMBER }}" >> .env
+          echo "BASE_URL=${{ secrets.BASE_URL }}" >> .env
+          echo "RABBITMQ_USER=${{ secrets.RABBITMQ_USER }}" >> .env
+          echo "RABBITMQ_PASSWORD=${{ secrets.RABBITMQ_PASSWORD }}" >> .env
+          echo "RABBITMQ_HOST=${{ secrets.RABBITMQ_HOST }}" >> .env
+
+      - name: Create SSH key
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H ${{ secrets.EC2_HOST }} >> ~/.ssh/known_hosts
+
+      - name: Deploy to EC2
+        run: |
+          scp -r ./* ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }}:~/api-test/
+          ssh ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }} '
+            cd ~/api-test
+            docker-compose down
+            docker-compose build
+            docker-compose up -d
+          '
