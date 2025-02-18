@@ -1,0 +1,355 @@
+{
+	"info": {
+		"_postman_id": "176e9cde-3762-4d48-84ac-160f249b8950",
+		"name": "API Test",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "25610792"
+	},
+	"item": [
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "Create Agent",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"mateus\",\r\n    \"password\": \"admin123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{host}}/api/v1/agents/"
+					},
+					"response": []
+				},
+				{
+					"name": "Read Agent",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/v1/agents/:pk/",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"agents",
+								":pk",
+								""
+							],
+							"variable": [
+								{
+									"key": "pk",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List Agents",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzM5NzY3NjgxLCJpYXQiOjE3Mzk3NjQwODEsImp0aSI6IjRiMzJmYWYzYmUyZjQ5NWRiMGU2NGU0Y2QwNTk3OWM2IiwidXNlcl9pZCI6IjgyNDliNWFiLTUyNjctNDJlMC04OWJkLTUxOTNjM2E5NDA2OCJ9.WiwbxqRXTcF_-2oYe99hrcPlBIsPBeMrmZt8p0LUvHU"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "{{host}}/api/v1/agents/"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Agent",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/v1/agents/:pk/",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"agents",
+								":pk",
+								""
+							],
+							"variable": [
+								{
+									"key": "pk",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Agent",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/v1/agents/:pk/",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"agents",
+								":pk",
+								""
+							],
+							"variable": [
+								{
+									"key": "pk",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Create Token",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"mateus\",\r\n    \"password\": \"admin123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{host}}/auth/token/"
+					},
+					"response": []
+				},
+				{
+					"name": "Refresh JWT Token",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": "{{host}}/token/refresh/"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Contact",
+			"item": [
+				{
+					"name": "List Contacts",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzM5ODQwNTY5LCJpYXQiOjE3Mzk4MzY5NjksImp0aSI6IjFlOWU4YTQ2NDJkODRjOTdhY2I2YTE5NThlMTI0NGE0IiwidXNlcl9pZCI6ImI1MTljNTA5LTU5NDktNDFiMC1iNWY0LWQwNzkwNDE3Zjc2YyJ9.q-J_I4oA31bhL0Rw2m_ZG7MYnQSfQNTQrV-1ma8fWH8"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "{{host}}/api/v1/contacts/"
+					},
+					"response": []
+				},
+				{
+					"name": "Read Contact",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/v1/contacts/:pk/",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"contacts",
+								":pk",
+								""
+							],
+							"variable": [
+								{
+									"key": "pk",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Messages",
+			"item": [
+				{
+					"name": "Send Message",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzM5NzU1MDE3LCJpYXQiOjE3Mzk3NTE0MTcsImp0aSI6IjliNTRkOGJmYzY2YzRiM2E5MjZjY2RlMGY3ZjI1NWNiIiwidXNlcl9pZCI6IjgyNDliNWFiLTUyNjctNDJlMC04OWJkLTUxOTNjM2E5NDA2OCJ9.V8WB6eY9IWoVfKrUpfqYmSM2Z8hzLwcd24-RC29fXZg"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"content\": \"Oi!\",\r\n    \"contact_id\": \"e0fbd40a-7acf-4d20-be65-44198c863d46\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{host}}/api/v1/messages/"
+					},
+					"response": []
+				},
+				{
+					"name": "List Messages",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzM5ODQwNTY5LCJpYXQiOjE3Mzk4MzY5NjksImp0aSI6IjFlOWU4YTQ2NDJkODRjOTdhY2I2YTE5NThlMTI0NGE0IiwidXNlcl9pZCI6ImI1MTljNTA5LTU5NDktNDFiMC1iNWY0LWQwNzkwNDE3Zjc2YyJ9.q-J_I4oA31bhL0Rw2m_ZG7MYnQSfQNTQrV-1ma8fWH8"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/v1/messages/",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"messages",
+								""
+							],
+							"query": [
+								{
+									"key": "agent_id",
+									"value": "8249b5ab-5267-42e0-89bd-5193c3a94068",
+									"disabled": true
+								},
+								{
+									"key": "contact_id",
+									"value": "1853cea4-a66d-4c31-bdf0-c08f28cbc0c5",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Read Message",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/v1/messages/:pk/",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"messages",
+								":pk",
+								""
+							],
+							"variable": [
+								{
+									"key": "pk",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Channel",
+			"item": [
+				{
+					"name": "Read Channel",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzM5NzU5MDYzLCJpYXQiOjE3Mzk3NTU0NjMsImp0aSI6IjhmM2I1ZGY4YTAzNDRkMzNhZDExODk2NDRjMWYwMWE0IiwidXNlcl9pZCI6IjgyNDliNWFiLTUyNjctNDJlMC04OWJkLTUxOTNjM2E5NDA2OCJ9.iGCVsw5efD-KsIr1JWo-6doHJqhlvA-KUs9cACFx9JU"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/v1/channels/:pk/",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"channels",
+								":pk",
+								""
+							],
+							"variable": [
+								{
+									"key": "pk",
+									"value": "3676f764-1471-488e-ad48-514dbf996945"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List Channels",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzM5ODMzOTUyLCJpYXQiOjE3Mzk4MzAzNTIsImp0aSI6IjMzYzU5YjhkZmI3MTQyZWJiYTdkOTBiY2E0OWZhMjA4IiwidXNlcl9pZCI6IjgyNDliNWFiLTUyNjctNDJlMC04OWJkLTUxOTNjM2E5NDA2OCJ9.d5sryplvU5YZk3qOOipI50b6jzE2a_kK8vsac0Y9qcA"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "{{host}}/api/v1/channels/"
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
