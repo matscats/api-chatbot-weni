@@ -7,10 +7,16 @@ class MockChannelTest(TestCase):
         self.channel = MockChannel(config={})
 
     def test_send_message(self):
+        """
+        Testa o método de enviar mensagens a partir do Mock.
+        """
         result = self.channel.send_message(contact_id="1", message="Olá")
         self.assertTrue(result)
 
     def test_process_webhook(self):
+        """
+        Testa o método de processar webhooks a partir do Mock.
+        """
         payload = {
             "contact_id": "1",
             "message": "Olá",

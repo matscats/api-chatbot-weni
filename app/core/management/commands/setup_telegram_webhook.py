@@ -5,6 +5,10 @@ import requests
 
 
 class Command(BaseCommand):
+    """
+    Comando necessário para configurar o Webhook do Telegram ao iniciar a aplicação.
+    """
+
     help = "Configura o webhook do Telegram"
 
     def handle(self, *args, **options):

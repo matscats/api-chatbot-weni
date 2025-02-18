@@ -164,6 +164,6 @@ CELERY_BROKER_CONNECTION_RETRY_ON_STARTUP = True
 CELERY_BEAT_SCHEDULE = {
     "delete-old-messages": {
         "task": "core.tasks.delete_old_messages",
-        "schedule": crontab(hour=1, minute=54),
+        "schedule": crontab(hour=0, minute=0),
     },
 }

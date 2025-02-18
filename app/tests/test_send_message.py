@@ -15,6 +15,9 @@ class SendMessageTest(TestCase):
         )
 
     def test_receive_message(self):
+        """
+        Teste para verificar o envio de mensagens no serviço de mensagens
+        """
         service = SendMessageService()
         message = service.send_message(
             contact_id=self.contact.id, content="Olá", agent_id=self.agent.id

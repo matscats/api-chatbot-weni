@@ -13,6 +13,10 @@ logger = logging.getLogger(__name__)
 
 @shared_task(name="core.tasks.delete_old_messages")
 def delete_old_messages():
+    """
+    Exclui mensagens criadas a mais de um mês.
+    Esta verificação ocorre uma vez ao dia às 00:00h
+    """
     try:
         delete_date = timezone.now() - timedelta(days=30)
 

@@ -122,8 +122,7 @@ class MessageAPITest(APITestCase):
         """Teste para verificar a paginação"""
         self.client.force_authenticate(user=self.agent)
 
-        # Criar mais mensagens
-        for i in range(15):  # Criar total de 16 mensagens
+        for i in range(15):
             Message.objects.create(
                 content=f"Test message {i}",
                 contact=self.contact,

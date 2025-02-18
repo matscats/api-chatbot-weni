@@ -18,6 +18,9 @@ class ReceiveMessageTest(TestCase):
         }
 
     def test_receive_message(self):
+        """
+        Teste para verificar o método de receber mensagens do serviço de mensagens
+        """
         service = ReceiveMessageService()
         message = service.receive_message(channel_type="mock", payload=self.payload)
 

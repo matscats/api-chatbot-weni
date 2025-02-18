@@ -6,6 +6,10 @@ from uuid import UUID
 
 
 class MockChannel(ChannelInterface):
+    """
+    Classe Mock de canal.
+    """
+
     channel_type = "mock"
 
     def __init__(self, config: Dict[str, Any]):

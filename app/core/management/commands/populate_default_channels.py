@@ -5,6 +5,10 @@ from core.models import Channel
 
 
 class Command(BaseCommand):
+    """
+    Cria os canais padrões suportados pela aplicação, sendo estes: Telegram e WhatsApp.
+    """
+
     help = "Popula o banco de dados com canais padrões"
 
     def handle(self, *args, **options):

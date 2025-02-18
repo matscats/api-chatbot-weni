@@ -13,6 +13,9 @@ class WhatsAppChannelTest(TestCase):
 
     @patch("channels.whatsapp.Client")
     def test_send_message(self, mock_client):
+        """
+        Teste para verificar o envio de mensagens no whatsapp a partir de mock.
+        """
         mock_client_instance = MagicMock()
         mock_client_instance.messages.create.return_value = MagicMock()
         mock_client.return_value = mock_client_instance
@@ -30,6 +33,9 @@ class WhatsAppChannelTest(TestCase):
         )
 
     def test_process_webhook(self):
+        """
+        Teste para verificar o processamento de webhook do whatsapp a partir de mock.
+        """
         payload = {
             "From": "whatsapp:+551630651351",
             "Body": "Olá",

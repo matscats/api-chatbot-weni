@@ -10,6 +10,9 @@ class TelegramChannelTest(TestCase):
 
     @patch("asyncio.run")
     def test_send_message(self, mock_run):
+        """
+        Testa o envio de mensagens para o canal do telegram a partir de mock.
+        """
         mock_run.return_value = None
 
         result = self.channel.send_message("123", "Teste")
@@ -17,6 +20,9 @@ class TelegramChannelTest(TestCase):
         self.assertTrue(result)
 
     def test_process_webhook(self):
+        """
+        Testa o processamento do webhook do telegram a partir de mock.
+        """
         payload = {
             "message": {"chat": {"id": 123, "first_name": "Teste"}, "text": "Oi"}
         }

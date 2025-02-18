@@ -4,6 +4,10 @@ from typing import Dict, Any
 
 
 class WhatsAppChannel(ChannelInterface):
+    """
+    Canal para receber e enviar mensagens via Telegram.
+    """
+
     channel_type = "whatsapp"
 
     def __init__(self, config: Dict[str, Any]):
@@ -11,6 +15,9 @@ class WhatsAppChannel(ChannelInterface):
         self.from_number = config["from_number"]
 
     def send_message(self, contact_id: str, message: str) -> bool:
+        """
+        Envia uma mensagem a partir do número do Whatsapp configurado.
+        """
         try:
             self.client.messages.create(
                 body=message,
@@ -23,6 +30,9 @@ class WhatsAppChannel(ChannelInterface):
             return False
 
     def process_webhook(self, payload: Dict[str, Any]) -> WebhookResponse:
+        """
+        Recebe uma mensagem do Whatsapp por meio de webhook.
+        """
         try:
             return {
                 "contact_id": payload.get("From").split(":")[1],
